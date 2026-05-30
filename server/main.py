@@ -50,9 +50,24 @@ def _wav(data: bytes) -> Response:
     return Response(content=data, media_type="audio/wav")
 
 
+@app.get("/")
+async def root():
+    return {
+        "service": "VoxCPM App Backend",
+        "version": "0.1.0",
+        "endpoints": ["/health", "/api/info", "/api/tts", "/api/design", "/api/clone"],
+    }
+
+
 @app.get("/health")
 async def health():
     return {"status": "ok"}
+
+
+@app.get("/api/info")
+async def api_info():
+    """模型/设备状态（loaded、sample_rate 等）。"""
+    return engine.info()
 
 
 @app.post("/api/tts")

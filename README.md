@@ -87,6 +87,17 @@ open VoxCPMApp.xcodeproj
 - 声音克隆涉及伦理与合规，请仅克隆获得授权的声音，并标注 AI 生成内容。
 - 想要高并发 / 低延迟，请改用 VoxCPM 官方的 [vLLM-Omni](https://github.com/vllm-project/vllm-omni) 部署（自带 OpenAI 兼容接口）。
 
+## 🎨 设计（Ego 风格）
+
+iOS 界面采用 **Ego 设计系统**（提取自同名内部工程）：
+
+- **主色** 靛蓝 `#3C4FC1`；**页面底** 薄荷 `#EFF7F3`；白色圆角卡片 + 轻阴影
+- **字体** OPPO Sans（5 字重，`Font.app(size:weight:)`，免费商用）
+- **组件** 浮动胶囊 TabBar、靛蓝胶囊主按钮、卡片式表单、招牌弹簧动效
+- 设计 token 集中在 `ios/VoxCPMApp/Theme/`，复用组件在 `ios/VoxCPMApp/Components/`
+
+> 部署目标 iOS 17。OPPO Sans 字体许可说明见 `ios/VoxCPMApp/Resources/Fonts/NOTICE.md`。
+
 ## 致谢
 
 本项目是对 [OpenBMB VoxCPM](https://github.com/OpenBMB/VoxCPM)（Apache-2.0）的应用封装：后端通过 `pip install voxcpm` 调用其推理能力，前端提供 iOS 界面。模型与权重版权归 OpenBMB 所有。

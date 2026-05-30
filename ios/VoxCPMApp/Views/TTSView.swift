@@ -14,29 +14,41 @@ struct TTSView: View {
     @State private var audioData: Data?
 
     var body: some View {
-        NavigationStack {
-            Form {
-                Section("文本") {
-                    TextEditor(text: $text).frame(minHeight: 120)
-                }
-                Section("参数") {
-                    Stepperized("引导强度 cfg", value: $cfg, range: 1.0...4.0, step: 0.5, format: "%.1f")
-                    Stepperized("推理步数", value: $steps, range: 4...30, step: 1, format: "%.0f")
-                    Toggle("文本归一化（数字 / 日期等）", isOn: $normalize)
-                }
-                Section {
-                    GenerateButton(isLoading: isLoading,
-                                   disabled: text.trimmingCharacters(in: .whitespaces).isEmpty,
-                                   action: generate)
-                    if let audioData {
-                        Button("重新播放") { player.play(data: audioData) }
-                    }
-                    if let errorMessage {
-                        Text(errorMessage).foregroundColor(.red).font(.footnote)
-                    }
+        ScreenScaffold(title: "多语言朗读", subtitle: "输入文本直接合成，支持 30 语种，无需语言标签") {
+            EgoCard {
+                VStack(alignment: .leading, spacing: 12) {
+                    FieldLabel(text: "文本")
+                    AppTextArea(placeholder: "输入要朗读的文本…", text: $text, minHeight: 130)
                 }
             }
-            .navigationTitle("多语言朗读")
+
+            EgoCard {
+                VStack(alignment: .leading, spacing: 18) {
+                    FieldLabel(text: "参数")
+                    LabeledSlider(title: "引导强度 cfg", value: $cfg, range: 1...4, step: 0.5, format: "%.1f")
+                    LabeledSlider(title: "推理步数", value: $steps, range: 4...30, step: 1, format: "%.0f")
+                    Toggle(isOn: $normalize) {
+                        Text("文本归一化（数字 / 日期）")
+                            .font(.app(size: 14))
+                            .foregroundColor(AppColor.textPrimary)
+                    }
+                    .tint(AppColor.brand)
+                }
+            }
+
+            PrimaryButton(title: isLoading ? "合成中…" : "生成语音",
+                          isLoading: isLoading,
+                          enabled: !text.trimmingCharacters(in: .whitespaces).isEmpty) {
+                generate()
+            }
+            .padding(.top, 4)
+
+            if let audioData {
+                PlaybackBar(player: player, data: audioData)
+            }
+            if let errorMessage {
+                ErrorNote(text: errorMessage)
+            }
         }
     }
 

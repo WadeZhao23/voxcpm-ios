@@ -59,6 +59,26 @@ def _generate(**kwargs) -> bytes:
     return buf.read()
 
 
+def is_loaded() -> bool:
+    return _model is not None
+
+
+def info() -> dict:
+    """返回服务/模型状态，供客户端探测。"""
+    data = {
+        "model_id": _env("VOXCPM_MODEL_ID", "openbmb/VoxCPM2"),
+        "device": _env("VOXCPM_DEVICE", "auto"),
+        "loaded": _model is not None,
+        "sample_rate": None,
+    }
+    if _model is not None:
+        try:
+            data["sample_rate"] = _model.tts_model.sample_rate
+        except Exception:
+            pass
+    return data
+
+
 def synthesize_tts(text: str, cfg_value: float = 2.0,
                    inference_timesteps: int = 10, normalize: bool = False) -> bytes:
     """多语言朗读：直接输入文本，无需语言标签。"""

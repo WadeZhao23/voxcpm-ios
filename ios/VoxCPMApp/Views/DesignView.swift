@@ -14,37 +14,50 @@ struct DesignView: View {
     @State private var audioData: Data?
 
     var body: some View {
-        NavigationStack {
-            Form {
-                Section("声音描述") {
-                    TextEditor(text: $description).frame(minHeight: 70)
-                    Text("用自然语言描述：性别、年龄、音色、情绪、语速等")
-                        .font(.footnote).foregroundColor(.secondary)
-                }
-                Section("朗读文本") {
-                    TextEditor(text: $text).frame(minHeight: 100)
-                }
-                Section("参数") {
-                    Stepperized("引导强度 cfg", value: $cfg, range: 1.0...4.0, step: 0.5, format: "%.1f")
-                    Stepperized("推理步数", value: $steps, range: 4...30, step: 1, format: "%.0f")
-                }
-                Section {
-                    GenerateButton(isLoading: isLoading,
-                                   disabled: text.trimmingCharacters(in: .whitespaces).isEmpty,
-                                   action: generate)
-                    if let audioData {
-                        Button("重新播放") { player.play(data: audioData) }
-                    }
-                    if let errorMessage {
-                        Text(errorMessage).foregroundColor(.red).font(.footnote)
-                    }
-                }
-                Section {
-                    Text("提示：声音设计结果有随机性，可多生成 1~3 次挑选满意音色。")
-                        .font(.footnote).foregroundColor(.secondary)
+        ScreenScaffold(title: "声音设计", subtitle: "用一句话描述凭空造一个音色，无需参考音频") {
+            EgoCard {
+                VStack(alignment: .leading, spacing: 10) {
+                    FieldLabel(text: "声音描述")
+                    AppTextArea(placeholder: "性别、年龄、音色、情绪、语速…", text: $description, minHeight: 76)
+                    Text("例：一位沉稳的中年男性，低沉磁性，语速偏慢")
+                        .font(.app(size: 12))
+                        .foregroundColor(AppColor.textTertiary)
                 }
             }
-            .navigationTitle("声音设计")
+
+            EgoCard {
+                VStack(alignment: .leading, spacing: 12) {
+                    FieldLabel(text: "朗读文本")
+                    AppTextArea(placeholder: "输入要朗读的文本…", text: $text, minHeight: 110)
+                }
+            }
+
+            EgoCard {
+                VStack(alignment: .leading, spacing: 18) {
+                    FieldLabel(text: "参数")
+                    LabeledSlider(title: "引导强度 cfg", value: $cfg, range: 1...4, step: 0.5, format: "%.1f")
+                    LabeledSlider(title: "推理步数", value: $steps, range: 4...30, step: 1, format: "%.0f")
+                }
+            }
+
+            PrimaryButton(title: isLoading ? "合成中…" : "生成语音",
+                          isLoading: isLoading,
+                          enabled: !text.trimmingCharacters(in: .whitespaces).isEmpty) {
+                generate()
+            }
+            .padding(.top, 4)
+
+            if let audioData {
+                PlaybackBar(player: player, data: audioData)
+            }
+            if let errorMessage {
+                ErrorNote(text: errorMessage)
+            }
+
+            Text("提示：声音设计结果有随机性，可多生成 1~3 次挑选满意音色。")
+                .font(.app(size: 12))
+                .foregroundColor(AppColor.textSecondary)
+                .padding(.horizontal, 4)
         }
     }
 

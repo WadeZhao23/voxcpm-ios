@@ -2,7 +2,7 @@ name: VoxCPMApp
 options:
   bundleIdPrefix: com.example
   deploymentTarget:
-    iOS: "16.0"
+    iOS: "17.0"
   createIntermediateGroups: true
 targets:
   VoxCPMApp:
@@ -20,9 +20,16 @@ targets:
         # 原型阶段允许明文 HTTP（连接本机/局域网后端）。上线务必收紧或改用 HTTPS。
         NSAppTransportSecurity:
           NSAllowsArbitraryLoads: true
+        # OPPO Sans 字体注册（Ego 设计系统基调字体）
+        UIAppFonts:
+          - OPPOSans-R.ttf
+          - OPPOSans-M.ttf
+          - OPPOSans-B.ttf
+          - OPPOSans-L.ttf
+          - OPPOSans-H.ttf
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.example.VoxCPMApp
         TARGETED_DEVICE_FAMILY: "1,2"
         SWIFT_VERSION: "5.0"
-        IPHONEOS_DEPLOYMENT_TARGET: "16.0"
+        IPHONEOS_DEPLOYMENT_TARGET: "17.0"

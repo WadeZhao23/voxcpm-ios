@@ -40,7 +40,9 @@ pip install -r requirements.txt
 uvicorn main:app --host 0.0.0.0 --port 8000
 ```
 
-可选环境变量（见 `.env.example`）：`VOXCPM_DEVICE=auto|cpu|mps|cuda`、`VOXCPM_OPTIMIZE=false`。
+> 若 `8000` 端口已被占用（例如本机已有其他后端在跑），改用空闲端口如 `--port 8008`，并相应修改 App「设置」页与下面冒烟测试里的地址。
+
+可选环境变量（见 `.env.example`）：`VOXCPM_MODEL_ID`、`VOXCPM_DEVICE=auto|cpu|mps|cuda`、`VOXCPM_OPTIMIZE=false`、`VOXCPM_LOAD_DENOISER=false`。
 
 > Mac 用 MPS 能跑但偏慢；想要流畅体验建议把后端放到带 NVIDIA GPU 的机器上。
 
@@ -74,7 +76,9 @@ open VoxCPMApp.xcodeproj
 
 | 方法 | 路径 | 说明 |
 |---|---|---|
+| GET | `/` | 服务信息 + 接口清单 |
 | GET | `/health` | 健康检查 |
+| GET | `/api/info` | 模型状态：`{model_id, device, loaded, sample_rate}` |
 | POST | `/api/tts` | 多语言朗读（JSON：`text`, `cfg_value`, `inference_timesteps`, `normalize`） |
 | POST | `/api/design` | 声音设计（JSON：`text`, `description`, ...） |
 | POST | `/api/clone` | 声音克隆（multipart：`reference_audio` 文件 + `text` + 可选 `control`） |

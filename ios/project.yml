@@ -29,7 +29,9 @@ targets:
           - OPPOSans-H.ttf
     settings:
       base:
-        PRODUCT_BUNDLE_IDENTIFIER: com.example.VoxCPMApp
+        PRODUCT_BUNDLE_IDENTIFIER: com.wadezhao23.voxcpm
+        DEVELOPMENT_TEAM: "4JG5RQJXV4"
+        CODE_SIGN_STYLE: Automatic
         TARGETED_DEVICE_FAMILY: "1,2"
         SWIFT_VERSION: "5.0"
         IPHONEOS_DEPLOYMENT_TARGET: "17.0"

@@ -1,0 +1,21 @@
+# macOS
+.DS_Store
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+env/
+.env
+
+# 生成的音频
+*.wav
+
+# Xcode —— 以下均由 `xcodegen generate` 从 project.yml 生成，不纳入版本控制
+*.xcodeproj/
+ios/VoxCPMApp/Info.plist
+DerivedData/
+build/
+xcuserdata/
+*.xcuserstate

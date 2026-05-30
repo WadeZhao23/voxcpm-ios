@@ -1,0 +1,28 @@
+name: VoxCPMApp
+options:
+  bundleIdPrefix: com.example
+  deploymentTarget:
+    iOS: "16.0"
+  createIntermediateGroups: true
+targets:
+  VoxCPMApp:
+    type: application
+    platform: iOS
+    sources:
+      - path: VoxCPMApp
+    info:
+      path: VoxCPMApp/Info.plist
+      properties:
+        CFBundleDisplayName: VoxCPM
+        UILaunchScreen: {}
+        # 录音权限说明（声音克隆需要）
+        NSMicrophoneUsageDescription: "需要使用麦克风录制参考音频用于声音克隆。"
+        # 原型阶段允许明文 HTTP（连接本机/局域网后端）。上线务必收紧或改用 HTTPS。
+        NSAppTransportSecurity:
+          NSAllowsArbitraryLoads: true
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.example.VoxCPMApp
+        TARGETED_DEVICE_FAMILY: "1,2"
+        SWIFT_VERSION: "5.0"
+        IPHONEOS_DEPLOYMENT_TARGET: "16.0"

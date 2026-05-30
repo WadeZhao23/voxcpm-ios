@@ -1,0 +1,7 @@
+# VoxCPM 会自动带入 torch / torchaudio / transformers 等重依赖
+voxcpm
+fastapi
+uvicorn[standard]
+python-multipart
+soundfile
+numpy
